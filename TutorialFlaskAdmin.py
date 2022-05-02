@@ -1,13 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-from flask_admin import Admin
-#from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib.sqla import ModelView
 
-app = Flask(__name__)
+import flask_admin as admin
+
+# Create flask app
+app = Flask(__name__, template_folder='templates')
 
 #Add Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///oe24Example.db'
@@ -18,80 +17,66 @@ app.config['SECRET_KEY'] = "my secret key"
 #Initialize the database
 db = SQLAlchemy(app)
 
-
-
 #Create Model
 class Datenquelle(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50), nullable = False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
-    #Create A String
-    def __repr__(self):
-        return '<Name %r>' % self.name
+    def __unicode__(self):
+        return self.name
+
+
+class Adresse(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    straße = db.Column(db.String(50))
+    hausnummer = db.Column(db.String(15))
+    plz = db.Column(db.Integer)
+    ort = db.Column(db.String(30))
+
+    def __unicode__(self):
+        return self.name
 
 class Kunde(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(50), nullable = False)
-    geburtsdatum = db.Column(db.DateTime, nullable = False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    geburtsdatum = db.Column(db.Date)
+    telefonnummer = db.Column(db.Integer)
+    email = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    #datenquellen = db.relationship(Datenquelle, backref='Datenquelle.id')
+
+    def __unicode__(self):
+        return self.name
 
 
-#Create InsertForms-----
-class FormDatenquelle(FlaskForm):
-    name = StringField("Name", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+class Rechnung(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    datum = db.Column(db.Date)
+    nummer = db.Column(db.Integer)
+    leistung = db.Column(db.String(50))
+    betrag = db.Numeric(10,2)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
-class FormDatenquelle(FlaskForm):
-name = StringField("Name", validators=[DataRequired()])
-submit = SubmitField("Submit")
+    def __unicode__(self):
+        return self.name
 
-# set optional bootswatch theme
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
-# Add administrative views here
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
-
+# Flask views
 @app.route('/')
 def index():
-    return render_template('index.html')
+    #db.create_all()
+    #db.session.commit()
+    return '<a href="/admin/">Click me to get to Admin!</a>'
 
-@app.route('/Database')
-def database():
-    allDatenquelle = Datenquelle.query.order_by(Datenquelle.date_added)
-    return render_template('database.html', allDatenquelle=allDatenquelle)
+# Create admin interface
+admin = admin.Admin(name="Flask Admin Example", template_mode='bootstrap4')
+admin.add_view(ModelView(Datenquelle, db.session))
+admin.add_view(ModelView(Adresse, db.session))
+admin.add_view(ModelView(Kunde, db.session))
+admin.add_view(ModelView(Rechnung, db.session))
+admin.init_app(app)
 
-@app.route('/Add_Datenquelle', methods=['GET', 'POST'])
-def add_Datenquelle():
-    name = None
-    form = FormDatenquelle()
-
-    if form.validate_on_submit():
-        datenquelle = Datenquelle.query.filter_by(name=form.name.data).first()
-        if datenquelle is None:
-            datenquelle = Datenquelle(name=form.name.data)
-            db.session.add(datenquelle)
-            db.session.commit()
-        name = form.name.data
-        form.name.data = ''
-         
-    allDatenquelle = Datenquelle.query.order_by(Datenquelle.date_added)
-
-    return render_template('add_datenquelle.html', form=form, name=name, allDatenquelle=allDatenquelle)
-
-@app.route('/Add_Kunde', methods=['GET', 'POST'])
-def add_Kunde():
-    allDatenquelle = Datenquelle.query.order_by(Datenquelle.date_added)
-    name = None
-    form = FormDatenquelle()
-    return render_template('add_kunde.html', form=form, name=name, allDatenquelle=allDatenquelle)
-
-@app.route('/Add_Rechnung')
-def add_Rechnung():
-    return render_template('add_rechnung.html')
-
-#Run App
+# Run App
 if __name__ == '__main__':
     app.run()
-
-
