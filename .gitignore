@@ -1,4 +1,4 @@
-. gitignore
+.gitignore
 
 virt/
 __pycache__/
