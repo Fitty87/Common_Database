@@ -63,3 +63,7 @@ class Invoice(db.Model):
    
     def __str__(self):
         return str(self.number)
+
+class MigrationTest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
