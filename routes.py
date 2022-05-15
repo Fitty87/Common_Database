@@ -20,8 +20,8 @@ class UserView(ModelView):
 
 # Create admin interface
 admin = admin.Admin(name="Flask Admin Example", template_mode='bootstrap4')
-admin.add_view(UserView(Datenquelle, db.session))
-admin.add_view(UserView(Adresse, db.session))
-admin.add_view(UserView(Kunde, db.session))
-admin.add_view(UserView(Rechnung, db.session))
+admin.add_view(UserView(Datasource, db.session))
+admin.add_view(UserView(Address, db.session))
+admin.add_view(UserView(Customer, db.session))
+admin.add_view(UserView(Invoice, db.session))
 admin.init_app(app)
