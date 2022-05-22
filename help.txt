@@ -15,10 +15,13 @@ cd ..
 env2\bin\python -m pip install -r requirements.txt
 
 Settings Flask
-set FLASK_APP=TutorialFlaskAdmin.py
+set FLASK_APP=common_database.py
 set FLASK_DEBUG=1
 
 Start Server
 Flask run
+
+Use localhost
+http://127.0.0.1:5000/
 
 

@@ -4,12 +4,11 @@ import flask_admin as admin
 from config import app
 from models import *
 
+
+
 # Flask views
 @app.route('/')
 def index():
-    #db.drop_all()
-    #db.create_all()
-    #db.session.commit()
     return '<a href="/admin/">Click me to get to Admin!</a>'
 
 # Create custom view
