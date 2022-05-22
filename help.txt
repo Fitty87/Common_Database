@@ -12,7 +12,7 @@ activate.bat
 Install requirements 
 cd ..
 cd ..
-env2\bin\python -m pip install -r requirements.txt
+py -m pip install -r Example\requirements.txt
 
 Settings Flask
 set FLASK_APP=common_database.py
