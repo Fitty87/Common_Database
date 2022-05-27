@@ -13,13 +13,12 @@ def index():
 
 # Create custom view
 class UserView(ModelView):
-    column_hide_backrefs = False
     page_size = 5
 
 
 # Create admin interface
 admin = admin.Admin(name="Flask Admin Example", template_mode='bootstrap4')
-admin.add_view(UserView(Datasource, db.session))
+admin.add_view(UserView(Source_of_data, db.session))
 admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))
 admin.add_view(UserView(Invoice, db.session))

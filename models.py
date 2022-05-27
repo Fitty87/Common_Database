@@ -6,17 +6,17 @@ customer_addresses = db.Table('customer_addresses',
                 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
                 db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
 
-datasource_addresses = db.Table('datasource_addresses', 
+source_of_data_addresses = db.Table('source_of_data_addresses', 
 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-db.Column('datasource_id', db.Integer, db.ForeignKey('datasource.id'), primary_key=True))
+db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
 
-class Datasource(db.Model):
+class Source_of_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50), nullable = False, unique=True)
-    customer = db.relationship('Customer', backref='datasource')
-    invoices = db.relationship('Invoice', backref='datasource')
-    addresses = db.relationship('Address', backref='datasource')
+    customer = db.relationship('Customer', backref='Source_of_data')
+    invoices = db.relationship('Invoice', backref='Source_of_data')
+    addresses = db.relationship('Address', backref='Source_of_data')
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __str__(self):
@@ -25,7 +25,7 @@ class Datasource(db.Model):
 
 class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    datasource_id = db.Column(db.Integer, db.ForeignKey('datasource.id'))
+    source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
     street = db.Column(db.String(50), nullable = False)
     street_number = db.Column(db.String(15), nullable = False)
     postcode = db.Column(db.Integer, nullable = False)
@@ -38,7 +38,7 @@ class Address(db.Model):
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    datasource_id = db.Column(db.Integer, db.ForeignKey('datasource.id'))
+    source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
     name = db.Column(db.String(50), nullable = False)
     date_of_birth = db.Column(db.Date, nullable = False)
     telephone_number = db.Column(db.Integer, nullable = False, unique=True)
@@ -53,7 +53,7 @@ class Customer(db.Model):
 
 class Invoice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    datasource_id = db.Column(db.Integer, db.ForeignKey('datasource.id'))
+    source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
     date = db.Column(db.Date, nullable = False)
     number = db.Column(db.Integer, nullable = False, unique=True)
