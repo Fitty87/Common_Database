@@ -38,12 +38,12 @@ class Address(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.now)
 
     def __init__(self, id_source_of_data, street, street_number, postcode, location, date_added):
-        source_of_data_id = id_source_of_data
-        street = street
-        street_number = street_number
-        postcode = postcode
-        location = location
-        date_added = date_added
+        self.source_of_data_id = id_source_of_data
+        self.street = street
+        self.street_number = street_number
+        self.postcode = postcode
+        self.location = location
+        self.date_added = date_added
 
     def __str__(self):
         return self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location
