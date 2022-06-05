@@ -19,6 +19,11 @@ class Source_of_data(db.Model):
     addresses = db.relationship('Address', backref='Source_of_data')
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def __init__(self, Name, Date_added):
+        self.name = Name
+        self.date_added = Date_added
+     
+
     def __str__(self):
         return self.name
 
@@ -31,6 +36,9 @@ class Address(db.Model):
     postcode = db.Column(db.Integer, nullable = False)
     location = db.Column(db.String(30), nullable = False)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    #def __init__(self):
+
 
     def __str__(self):
         return self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location
