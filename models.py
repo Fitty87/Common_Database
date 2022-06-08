@@ -60,6 +60,15 @@ class Customer(db.Model):
     addresses = db.relationship('Address', secondary="customer_addresses", lazy='subquery', backref=db.backref('customer', lazy=True))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
+    def __init__(self, id_source_of_data,  name, date_of_birth, telephone_number, email, date_added):
+        self.id_source_of_data = id_source_of_data
+        self.name = name
+        self.date_of_birth = date_of_birth
+        self.telephone_number = telephone_number
+        self.email = email
+        self.date_added = date_added
+
+
     def __str__(self):
         return self.name
 
@@ -74,5 +83,15 @@ class Invoice(db.Model):
     amount = db.Numeric(10,2)
     created_at = db.Column(db.DateTime, default=datetime.now)
    
+    def __init__(self, id_source_of_data, customer_id, date, number, service, amount, created_at):
+        self.source_of_data_id = id_source_of_data
+        self.customer_id = customer_id
+        self.date = date
+        self.number = number
+        self.service = service
+        self.amount = amount
+        self.created_at = created_at
+
+
     def __str__(self):
         return str(self.number)
