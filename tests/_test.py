@@ -6,6 +6,7 @@ from models import Customer
 from models import Invoice
 from routes import UserView
 from flask import request
+import re
 
 from config import db
 
@@ -45,18 +46,21 @@ def test_new_customer():
     """
     GIVEN a Customer Model and a datasource record
     WHEN a new Customer is created
-    THEN Check if the id of the datasource, name, date_of_birth, telephone_number, email, date_added is correct 
+    THEN Check if the id of the datasource, name, date_of_birth, telephone_number, email, date_added is correct and if the email format is valid
     """
 
     source_of_data = Source_of_data("Radio", "2022-05-30 20:20:00")
 
     customer = Customer(source_of_data.id, "Franz", "1970-05-03", "0699123456789", "office@franz.at", "2022-05-30 20:20:00")
 
+    valid_email = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", customer.email))
+
     assert customer.source_of_data_id == source_of_data.id
     assert customer.name == "Franz"
     assert customer.date_of_birth == "1970-05-03"
     assert customer.telephone_number == "0699123456789"
     assert customer.email == "office@franz.at"
+    assert valid_email == True
     assert customer.date_added == "2022-05-30 20:20:00"
     return customer
 
