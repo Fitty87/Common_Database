@@ -10,6 +10,8 @@ app = Flask(__name__, template_folder='templates')
 #Add Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///common_database.db'
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 #Secret Key
 app.config['SECRET_KEY'] = "my secret key" 
 
