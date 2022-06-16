@@ -1,12 +1,13 @@
+"""
 import pytest
 from config import app
 
 def test_admin_page():
-    """
+   
     GIVEN a Flask app to provide a common database
     WHEN the '/admin/' page is requested (GET)
     THEN Check that the respond is valid
-    """
+   
 
     flask_app = app
 
@@ -17,11 +18,10 @@ def test_admin_page():
 
 
 def test_source_of_data_page():
-    """
+  
     GIVEN a Flask app to provide a common database
     WHEN the '/admin/source_of_data/' page is requested (GET)
-    THEN Check that the respond is valid
-    """
+
 
     flask_app = app
 
@@ -32,11 +32,11 @@ def test_source_of_data_page():
 
 
 def test_address_page():
-    """
+  
     GIVEN a Flask app to provide a common database
     WHEN the '/admin/address/' page is requested (GET)
     THEN Check that the respond is valid
-    """
+  
 
     flask_app = app
 
@@ -47,11 +47,11 @@ def test_address_page():
 
 
 def test_customer_page():
-    """
+ 
     GIVEN a Flask app to provide a common database
     WHEN the '/admin/customer/' page is requested (GET)
     THEN Check that the respond is valid
-    """
+ 
 
     flask_app = app
 
@@ -62,11 +62,11 @@ def test_customer_page():
 
 
 def test_invoice_page():
-    """
+
     GIVEN a Flask app to provide a common database
     WHEN the '/admin/invoice/' page is requested (GET)
     THEN Check that the respond is valid
-    """
+  
 
     flask_app = app
 
@@ -74,3 +74,5 @@ def test_invoice_page():
         response = test_client.get('/admin/invoice/')
 
         assert response.status_code == 200
+
+"""

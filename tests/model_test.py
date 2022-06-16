@@ -7,41 +7,44 @@ from models import Invoice
 from routes import UserView
 from flask import request
 import re
-
 from config import db
 
 #Fixtures-----
-@pytest.fixture
+@pytest.fixture(scope='module')
 def source_of_data_instance():
     source_of_data = Source_of_data("Radio", "2022-05-30 20:20:00")
     return source_of_data
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def address_instance(source_of_data_instance):
     address = Address(source_of_data_instance.id, "Seeweg", 4, 1160, "Wien", "2022-05-30 20:20:00")
     return address
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def customer_instance(source_of_data_instance):
     customer = Customer(source_of_data_instance.id, "Franz", "1970-05-03", "+4369911314976", "office@franz.at", "2022-05-30 20:20:00")
     return customer
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def invoice_instance1(source_of_data_instance, customer_instance):
     invoice = Invoice(source_of_data_instance.id, customer_instance.id, "2021-11-30", 123456, "Anzeige", 1500,  "2022-05-30 20:20:00")
     return invoice
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def invoice_instance2(source_of_data_instance, customer_instance):
     invoice = Invoice(source_of_data_instance.id, customer_instance.id, "2021-11-30", 7891, "Abo", 500,  "2022-05-30 20:20:00")
     return invoice
 
-#Create_Tests-----
+
+#Create_new_record-----
+@pytest.mark.create_new_record
 def test_new_Source_of_Data(source_of_data_instance):
     """
     GIVEN a Source of Data Model
     WHEN a new Source of Data is created
-    THEN Check if a name of at least 3 characters is entered
+    THEN Check if name is correct,
+                if a name of at least 3 characters is entered,
+                if the date_added is correct
     """
     count_chars_name = len(source_of_data_instance.name)
 
@@ -50,7 +53,7 @@ def test_new_Source_of_Data(source_of_data_instance):
     assert source_of_data_instance.date_added == "2022-05-30 20:20:00"
 
 
-
+@pytest.mark.create_new_record
 def test_new_address(source_of_data_instance, address_instance):
     """
     GIVEN a Address Model and a datasource record
@@ -83,7 +86,9 @@ def test_new_address(source_of_data_instance, address_instance):
     assert count_numbers_location == 0
     assert address_instance.date_added == "2022-05-30 20:20:00"
 
+
 #email valid verbessern
+@pytest.mark.create_new_record
 def test_new_customer(source_of_data_instance, customer_instance):
     """
     GIVEN a Customer Model and a datasource record
@@ -93,7 +98,6 @@ def test_new_customer(source_of_data_instance, customer_instance):
             if a name don't contain any numbers
             if the format for the date_of_birth is correct
             if the telephone number do not exceed the maximum of 15 numbers (incl. Countrycode) and has a valid format
-
     """
    
     count_chars_name = len(customer_instance.name)
@@ -118,7 +122,7 @@ def test_new_customer(source_of_data_instance, customer_instance):
     assert valid_email == True
     assert customer_instance.date_added == "2022-05-30 20:20:00"
 
-
+@pytest.mark.create_new_record
 def test_new_invoice(source_of_data_instance, customer_instance, invoice_instance1):
     """
     GIVEN a Invoice Model, a datasource record and a customer record
@@ -132,8 +136,9 @@ def test_new_invoice(source_of_data_instance, customer_instance, invoice_instanc
     assert invoice_instance1.service == "Anzeige"
     assert invoice_instance1.amount == 1500
     assert invoice_instance1.created_at == "2022-05-30 20:20:00"
-   
 
+#Relationship-----
+@pytest.mark.relationship
 def test_relationship_customer_and_invoice(customer_instance, invoice_instance1, invoice_instance2):
     """
     GIVEN one address and two source_of_data
@@ -145,7 +150,3 @@ def test_relationship_customer_and_invoice(customer_instance, invoice_instance1,
 
     assert customer_instance.invoices[0].number == 123456
     assert customer_instance.invoices[1].number == 7891
-
-
-#def test_relationship_customer_and_address()
-
