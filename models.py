@@ -1,6 +1,7 @@
 from config import db
 from datetime import datetime
 
+
 #Create Model
 customer_addresses = db.Table('customer_addresses', 
                 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
@@ -54,7 +55,7 @@ class Customer(db.Model):
     source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
     name = db.Column(db.String(50), nullable = False)
     date_of_birth = db.Column(db.Date, nullable = False)
-    telephone_number = db.Column(db.Integer, nullable = False, unique=True)
+    telephone_number = db.Column(db.String(50), nullable = False, unique=True)
     email = db.Column(db.String(50), nullable = False, unique=True)  
     invoices = db.relationship('Invoice', backref='customer')
     addresses = db.relationship('Address', secondary="customer_addresses", lazy='subquery', backref=db.backref('customer', lazy=True))
