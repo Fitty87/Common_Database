@@ -17,7 +17,9 @@ app.config['SECRET_KEY'] = "my secret key"
 
 #Initialize the database
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True, render_as_batch=True)
+
+
 
 
 

@@ -79,7 +79,7 @@ class Invoice(db.Model):
     source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
     date = db.Column(db.Date, nullable = False)
-    number = db.Column(db.Integer, nullable = False, unique=True)
+    number = db.Column(db.String(30), nullable = False, unique=True)
     service = db.Column(db.String(50), nullable = False)
     amount = db.Numeric(10,2)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -95,4 +95,4 @@ class Invoice(db.Model):
 
 
     def __str__(self):
-        return str(self.number)
+        return self.number

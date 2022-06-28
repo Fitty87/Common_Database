@@ -127,11 +127,17 @@ class Test_Create_New_Records:
         """
         GIVEN a Invoice Model, a datasource record and a customer record
         WHEN a new Invoice is created
-        THEN Check if the id of the datasource, id of customer, date, number, service, amount and created_at is correct 
+        THEN Check if the id of the datasource is save correctly, 
+                   if the id of the customer is save correctly,
+                   if the format for the invoice_date is correct,                             
         """
+        #Dont repeat yourself --> extra Class for dateCheck...string check..?
+        valid_date = bool(re.findall(r'\d{4}-\d{2}-\d{2}', invoice_instance1.date))
+        
         assert invoice_instance1.source_of_data_id == source_of_data_instance.id
         assert invoice_instance1.customer_id == customer_instance.id
         assert invoice_instance1.date == "2021-11-30"
+        assert valid_date == True
         assert invoice_instance1.number == 123456
         assert invoice_instance1.service == "Anzeige"
         assert invoice_instance1.amount == 1500
