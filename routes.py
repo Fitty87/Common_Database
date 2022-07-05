@@ -1,8 +1,11 @@
+from flask import render_template
+from flask_bootstrap import Bootstrap
 from flask_admin.contrib.sqla import ModelView
 import flask_admin as admin
 
 from config import app
 from models import *
+from forms import *
 
 
 
@@ -10,6 +13,11 @@ from models import *
 @app.route('/')
 def index():
     return '<a href="/admin/">Click me to get to Admin!</a>'
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
 # Create custom view
 class UserView(ModelView):
