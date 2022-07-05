@@ -11,6 +11,17 @@ source_of_data_addresses = db.Table('source_of_data_addresses',
 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
 db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(50), nullable = False)
+    password = db.Column(db.String(50))
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+    def __str__(self):
+        return str(self.email)
 
 class Source_of_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -26,7 +37,7 @@ class Source_of_data(db.Model):
      
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Address(db.Model):
@@ -47,7 +58,7 @@ class Address(db.Model):
         self.date_added = date_added
 
     def __str__(self):
-        return self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location
+        return str(self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location)
 
 
 class Customer(db.Model):
@@ -71,7 +82,7 @@ class Customer(db.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Invoice(db.Model):
@@ -95,4 +106,4 @@ class Invoice(db.Model):
 
 
     def __str__(self):
-        return self.number
+        return str(self.number)
