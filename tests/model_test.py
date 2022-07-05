@@ -74,10 +74,14 @@ class Test_Create_New_Records:
                    if password do not exceed the max of chars
                    if password is not an empty String
         """
-
+        
         valid_email = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", user_instance.email))
+        count_passwordchars = len(user_instance.password)
+        count_passwordchars_empties = user_instance.password.count(' ')
 
         assert valid_email == True
+        assert count_passwordchars <= 20
+        assert count_passwordchars_empties != len(user_instance.password)
 
 
     def test_new_Source_of_Data(self, source_of_data_instance, wrong_source_of_data_instance_too_short, wrong_source_of_data_instance_too_long):
