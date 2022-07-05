@@ -13,7 +13,7 @@ from forms import *
 # Flask views
 @app.route('/')
 def index():
-    return '<a href="/admin/">Click me to get to Admin!</a>'
+    return redirect('/login')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
