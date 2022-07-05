@@ -4,12 +4,18 @@ from models import Source_of_data
 from models import Address
 from models import Customer
 from models import Invoice
+from models import User
 from routes import UserView
 from flask import request
 import re
 from config import db
 
 #Fixtures-----
+@pytest.fixture(scope='class')
+def user_instance():
+    user = User("s.wolf@oe24.at", "password123")
+    return user
+
 @pytest.fixture(scope='class')
 def source_of_data_instance():
     source_of_data = Source_of_data("Radio", "2022-05-30 20:20:00")
@@ -59,6 +65,21 @@ def wrong_source_of_data_instance_too_long():
 #Test_Classes-----
 class Test_Create_New_Records:
     
+    #Hier noch Test unterteilen in Stammdaten testen / Funktional Tests
+    def test_new_user(self, user_instance):
+        """
+        GIVEN a User Model
+        WHEN a new User is created
+        THEN Check if email is valid,
+                   if password do not exceed the max of chars
+                   if password is not an empty String
+        """
+
+        valid_email = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", user_instance.email))
+
+        assert valid_email == True
+
+
     def test_new_Source_of_Data(self, source_of_data_instance, wrong_source_of_data_instance_too_short, wrong_source_of_data_instance_too_long):
         """
         GIVEN a Source of Data Model

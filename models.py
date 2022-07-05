@@ -14,7 +14,7 @@ db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), p
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(50), nullable = False)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(20))
 
     def __init__(self, email, password):
         self.email = email
