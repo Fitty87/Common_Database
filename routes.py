@@ -18,15 +18,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
-
-
     return render_template('login.html', form=form)
-
-def test():
-    if request.method == "POST":
-        return redirect(url_for('register', form = form))
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

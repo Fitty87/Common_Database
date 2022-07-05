@@ -11,10 +11,12 @@ source_of_data_addresses = db.Table('source_of_data_addresses',
 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
 db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(50), nullable = False, unique=True)
     password = db.Column(db.String(20), nullable = False)
+    authenticated = db.Column(db.Boolean, default=False)
+
 
     def __init__(self, email, password):
         self.email = email
@@ -22,6 +24,8 @@ class User(db.Model, UserMixin):
 
     def __str__(self):
         return str(self.email)
+
+    
 
 class Source_of_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)

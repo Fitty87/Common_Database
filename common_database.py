@@ -17,6 +17,15 @@ migration_path = op.join(app_dir, 'migrations')
 #db.create_all()
 #db.session.commit()
 
+#Create first User = Admin if countUser = 0
+countUser = User.query.count()
+if countUser == 0:
+    email = "admin@oe24.at"
+    password = "admin"
+    user = User(email, password)
+    user.authenticated = True
+    db.session.add(user)
+    db.session.commit()
 
 # Run App
 if __name__ == '__main__':
