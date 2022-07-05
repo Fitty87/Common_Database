@@ -1,7 +1,8 @@
-from flask import render_template
+from flask import render_template, redirect, request, url_for
 from flask_bootstrap import Bootstrap
 from flask_admin.contrib.sqla import ModelView
 import flask_admin as admin
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 from config import app
 from models import *
@@ -17,7 +18,20 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
+
+
     return render_template('login.html', form=form)
+
+def test():
+    if request.method == "POST":
+        return redirect(url_for('register', form = form))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    return render_template('register.html', form=form)
 
 # Create custom view
 class UserView(ModelView):

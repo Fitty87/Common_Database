@@ -1,6 +1,6 @@
 from config import db
 from datetime import datetime
-
+from flask_login import UserMixin
 
 #Create Model
 customer_addresses = db.Table('customer_addresses', 
@@ -11,10 +11,10 @@ source_of_data_addresses = db.Table('source_of_data_addresses',
 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
 db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(50), nullable = False)
-    password = db.Column(db.String(20))
+    email = db.Column(db.String(50), nullable = False, unique=True)
+    password = db.Column(db.String(20), nullable = False)
 
     def __init__(self, email, password):
         self.email = email
