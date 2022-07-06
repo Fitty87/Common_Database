@@ -2,7 +2,7 @@ from models import *
 from routes import *
 from config import app
 from config import db
-
+from werkzeug.security import generate_password_hash
 
 
 import os
@@ -18,8 +18,15 @@ migration_path = op.join(app_dir, 'migrations')
 #db.session.commit()
 
 #Create first User as Admin if countUser == 0
-#countUser = User.query.count()
-#if countUser == 0:
+countUser = User.query.count()
+if countUser == 0:
+    user = User()
+    user.email = "admin@oe24.at"
+    user.password = generate_password_hash("admin")
+    user.authenticated = True
+    db.session.add(user)
+    db.session.commit()
+
     #email = "admin@oe24.at"
     #password = "admin"
     #user = User(email, password)
