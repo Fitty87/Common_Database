@@ -1,6 +1,7 @@
 from config import db
 from datetime import datetime
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #Create Model
 customer_addresses = db.Table('customer_addresses', 
@@ -11,17 +12,22 @@ source_of_data_addresses = db.Table('source_of_data_addresses',
 db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
 db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(50), nullable = False, unique=True)
-    password = db.Column(db.String(20), nullable = False)
-    authenticated = db.Column(db.Boolean, default=False)
+    password_hash = db.Column(db.String(128))
+    
+    @property
+    def password(self):
+        raise AttributeError('Password is not readable')
 
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
 
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
-
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
     def __str__(self):
         return str(self.email)
 

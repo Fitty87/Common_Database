@@ -11,10 +11,16 @@ import re
 from config import db
 
 #Fixtures-----
+"""
 @pytest.fixture(scope='class')
 def user_instance():
-    user = User("s.wolf@oe24.at", "password123")
+    #user = User("s.wolf@oe24.at", "password123")
+    user = User()
+    user.email = "s.wolf@oe24.at"
+    user.password = "password123"
+    
     return user
+"""
 
 @pytest.fixture(scope='class')
 def source_of_data_instance():
