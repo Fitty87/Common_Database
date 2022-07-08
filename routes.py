@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_admin.contrib.sqla import ModelView
 import flask_admin as admin
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_admin import AdminIndexView
 
 from config import app
 from models import *
@@ -11,7 +12,16 @@ from forms import *
 #Flask_Routes
 @app.route('/')
 def index():
-    return redirect('/login')
+    return '<a href="/login">Please Login</a>'
+    #return redirect('/login')
+
+#@app.route('/admin')
+#def admin():
+    #user_id = current_user.id
+
+    #if(user_id != 1): #Id=1 ist der Admin
+        #print("only admin has access to admin page")
+        #return redirect(url_for('/login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -24,6 +34,10 @@ def login():
             if check_password_hash(user.password_hash, form.password.data):
                 login_user(user)
                 print("Login was successful")
+
+                #if(user.id == 1): #Der erste User ist Admin
+                    #return redirect(url_for('admin.index'))
+
             else: 
                 print("Login failed")
         else:
@@ -31,6 +45,11 @@ def login():
 
     return render_template('login.html', form=form)
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    print("Logout")
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -40,7 +59,6 @@ def register():
         user = User()
         user.email = form.email.data
         user.password_hash = generate_password_hash(form.password.data)
-        #user.authenticated = True
         db.session.add(user)
         db.session.commit()
         print("successful registration")
@@ -51,9 +69,22 @@ def register():
 class UserView(ModelView):
     page_size = 5
 
+#Admin_Index_View
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+    
+        if(current_user.is_authenticated): #Ist User eingeloggt!
+            user_id = current_user.id
+
+            if user_id == 1: #Admin hat id=1
+                return True
+
+        else:
+            return False
 
 #Create_Admin_Interface
-admin = admin.Admin(name="Flask Admin Example", template_mode='bootstrap4')
+admin = admin.Admin(name="Common Database", template_mode='bootstrap4', index_view=MyAdminIndexView())
+admin.add_view(UserView(User, db.session))
 admin.add_view(UserView(Source_of_data, db.session))
 admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))

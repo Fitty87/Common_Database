@@ -24,12 +24,9 @@ if countUser == 0:
     user.email = "admin@oe24.at"
     user.password_hash = generate_password_hash("admin")
     print(user.password_hash)
-    user.authenticated = True
+    user.is_authenticated = True
     db.session.add(user)
     db.session.commit()
-    #user.authenticated = True
-
-
 
 # Run App
 if __name__ == '__main__':
