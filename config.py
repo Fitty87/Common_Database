@@ -4,7 +4,6 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
-
 # Create flask app
 app = Flask(__name__, template_folder='templates')
 
@@ -23,16 +22,12 @@ app.config['SECRET_KEY'] = "my secret key"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True, render_as_batch=True) #render_as_batch=True
 
-
-
 #LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-@login_manager.user_loader
-def user_loader(user_id):
-    return User.query.get(user_id)
+
 
 
 

@@ -22,17 +22,14 @@ countUser = User.query.count()
 if countUser == 0:
     user = User()
     user.email = "admin@oe24.at"
-    user.password = generate_password_hash("admin")
+    user.password_hash = generate_password_hash("admin")
+    print(user.password_hash)
     user.authenticated = True
     db.session.add(user)
     db.session.commit()
-
-    #email = "admin@oe24.at"
-    #password = "admin"
-    #user = User(email, password)
     #user.authenticated = True
-    #db.session.add(user)
-    #db.session.commit()
+
+
 
 # Run App
 if __name__ == '__main__':
