@@ -13,15 +13,7 @@ from forms import *
 @app.route('/')
 def index():
     return '<a href="/login">Please Login</a>'
-    #return redirect('/login')
 
-#@app.route('/admin')
-#def admin():
-    #user_id = current_user.id
-
-    #if(user_id != 1): #Id=1 ist der Admin
-        #print("only admin has access to admin page")
-        #return redirect(url_for('/login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -35,8 +27,9 @@ def login():
                 login_user(user)
                 print("Login was successful")
 
-                #if(user.id == 1): #Der erste User ist Admin
-                    #return redirect(url_for('admin.index'))
+     
+                if(user.id == 1): #Der erste User ist Admin
+                    return redirect(url_for('admin.index'))
 
             else: 
                 print("Login failed")
@@ -69,11 +62,17 @@ def register():
 class UserView(ModelView):
     page_size = 5
 
+    id = current_user.id
+
+
+
+
+
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
     
-        if(current_user.is_authenticated): #Ist User eingeloggt!
+        if current_user.is_authenticated: #Ist User eingeloggt!
             user_id = current_user.id
 
             if user_id == 1: #Admin hat id=1
