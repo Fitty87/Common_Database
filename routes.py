@@ -62,10 +62,6 @@ def register():
 class UserView(ModelView):
     page_size = 5
 
-    #can_create = False
-    #can_delete = False
-    #can_edit = False 
-
     def get_query(self):
         if current_user.is_authenticated: 
             if current_user.id != 1:

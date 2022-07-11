@@ -28,6 +28,11 @@ if countUser == 0:
     db.session.add(user)
     db.session.commit()
 
+#So kann man Nur Datatables Queries machen
+#test = db.session.query(customer_addresses).all()
+
+
+
 # Run App
 if __name__ == '__main__':
     app.run()

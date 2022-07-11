@@ -3,20 +3,25 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-#Create Model
+#Data-Tables
 customer_addresses = db.Table('customer_addresses', 
-                db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-                db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
+    db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
+    db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
+
+user_accessable_source_of_data_ids = db.Table('user_accessable_source_of_data_ids', 
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
 source_of_data_addresses = db.Table('source_of_data_addresses', 
-db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
+    db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
+    db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
+#Model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(50), nullable = False, unique=True)
     password_hash = db.Column(db.String(128))
-    
+    accessable_source_of_data_ids = db.relationship('Source_of_data', secondary="user_accessable_source_of_data_ids", lazy='subquery', backref=db.backref('user', lazy=True))
     
     @property
     def password(self):
