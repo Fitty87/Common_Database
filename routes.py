@@ -60,19 +60,13 @@ def register():
 
 #Create_Custom_View
 class UserView(ModelView):
-    page_size = 5
+    page_size = 5   
 
-    def is_accessible(self):
-        if current_user.is_authenticated: #Ist User eingeloggt!
-            if current_user.id == 1: #Admin hat id=1
-                return True
+    def get_query(self):
+        if current_user.id != 1:
+            return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
         else:
-            return False
-
-
-
-
-
+            return self.session.query(self.model)
 
 
 #Admin_Index_View
@@ -83,6 +77,7 @@ class MyAdminIndexView(AdminIndexView):
                 return True
         else:
             return False
+  
 
 #Create_Admin_Interface
 admin = admin.Admin(name="Common Database", template_mode='bootstrap4', index_view=MyAdminIndexView())
