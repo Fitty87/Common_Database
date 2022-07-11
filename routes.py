@@ -62,7 +62,14 @@ def register():
 class UserView(ModelView):
     page_size = 5
 
-    id = current_user.id
+    def is_accessible(self):
+        if current_user.is_authenticated: #Ist User eingeloggt!
+            if current_user.id == 1: #Admin hat id=1
+                return True
+        else:
+            return False
+
+
 
 
 
@@ -71,13 +78,9 @@ class UserView(ModelView):
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-    
         if current_user.is_authenticated: #Ist User eingeloggt!
-            user_id = current_user.id
-
-            if user_id == 1: #Admin hat id=1
+            if current_user.id == 1: #Admin hat id=1
                 return True
-
         else:
             return False
 
