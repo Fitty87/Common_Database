@@ -62,12 +62,31 @@ def register():
 class UserView(ModelView):
     page_size = 5   
 
-    def get_query(self):
+
+    def get_query(self):   
         if current_user.id != 1:
             return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
         else:
             return self.session.query(self.model)
 
+class UserView(ModelView):
+    page_size = 5
+
+    def is_accessible(self):
+        #Ist User eingeloggt!
+        if current_user.is_authenticated: 
+            #User, der kein Admin ist
+            if current_user.id != 1: 
+                if self.model == User or self.model == Source_of_data:
+                    return False
+                else: 
+                    return True
+            #Admin
+            else:
+                return True
+        #Nicht eingeloggt
+        else:
+            return False 
 
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
@@ -81,11 +100,14 @@ class MyAdminIndexView(AdminIndexView):
 
 #Create_Admin_Interface
 admin = admin.Admin(name="Common Database", template_mode='bootstrap4', index_view=MyAdminIndexView())
+
 admin.add_view(UserView(User, db.session))
 admin.add_view(UserView(Source_of_data, db.session))
 admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))
 admin.add_view(UserView(Invoice, db.session))
+
+
 admin.init_app(app)
 
 #Login_Manager
