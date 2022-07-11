@@ -60,33 +60,38 @@ def register():
 
 #Create_Custom_View
 class UserView(ModelView):
-    page_size = 5   
-
-
-    def get_query(self):   
-        if current_user.id != 1:
-            return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
-        else:
-            return self.session.query(self.model)
-
-class UserView(ModelView):
     page_size = 5
 
-    def is_accessible(self):
-        #Ist User eingeloggt!
+    #can_create = False
+    #can_delete = False
+    #can_edit = False 
+
+    def get_query(self):
         if current_user.is_authenticated: 
-            #User, der kein Admin ist
-            if current_user.id != 1: 
+            if current_user.id != 1:
+                self.can_create = False
+                self.can_delete = False
+                self.can_edit = False
+                return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
+            else:
+                return self.session.query(self.model)
+        else:
+            return None
+
+
+    def is_accessible(self):
+        if current_user.is_authenticated: 
+            if current_user.id != 1:
                 if self.model == User or self.model == Source_of_data:
                     return False
-                else: 
+                else:
                     return True
-            #Admin
             else:
                 return True
-        #Nicht eingeloggt
-        else:
-            return False 
+        return False
+            
+      
+
 
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
@@ -106,6 +111,15 @@ admin.add_view(UserView(Source_of_data, db.session))
 admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))
 admin.add_view(UserView(Invoice, db.session))
+
+
+
+
+
+
+
+
+
 
 
 admin.init_app(app)
