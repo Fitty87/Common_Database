@@ -68,7 +68,38 @@ class UserView(ModelView):
                 self.can_create = False
                 self.can_delete = False
                 self.can_edit = False
-                return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
+
+                model = self.model
+                filtered_model = self.session.query(self.model)
+                filtered_model = self.session.query(model).filter(model.source_of_data_id != 1)
+                filtered_model = self.session.query(model).filter(model.source_of_data_id != 3)
+               
+                """                           
+                user_access_ids = self.session.query(UserAccess).filter(UserAccess.user_id == 1)
+                print("Jetzte hier:                       " + str(user_access_ids))
+                all_ids = Source_of_data.query.get(id)
+                ids_not_accessable = []
+
+                filtered_model = self.session.query(self.model)
+
+                for i in user_access_ids:
+                    count = 0
+                    
+                    if i.source_of_data_id == all_ids[i]:
+                        count += 1
+
+                    if count == 0:
+                        ids_not_accessable.append(i)
+                        print("p                 ::::       " + str(ids_not_accessable[i]))
+
+                for j in ids_not_accessable:
+                    filtered_model = filtered_model.query.filter(filtered_model.source_of_data_id != ids_not_accessable[j])       
+
+                """
+                return filtered_model
+             
+                #return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
+                
             else:
                 return self.session.query(self.model)
         else:

@@ -18,19 +18,10 @@ source_of_data_addresses = db.Table('source_of_data_addresses',
     db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
 #Model
-class UserAccess(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
-
-    user = db.relationship('User', backref='users')
-    source_of_data = db.relationship('Source_of_data', backref='source_of_datas')
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(50), nullable = False, unique=True)
     password_hash = db.Column(db.String(128))
-    #accessable_source_of_data_ids = db.relationship('Source_of_data', secondary="user_accessable_source_of_data_ids", lazy='subquery', backref=db.backref('user', lazy=True))
 
     @property
     def password(self):
@@ -46,7 +37,14 @@ class User(db.Model, UserMixin):
     def __str__(self):
         return str(self.email)
 
-    
+#Prüfen Kombi aus beiden darf nur einmal vorkommen!
+class UserAccess(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    source_of_data_id = db.Column(db.Integer, db.ForeignKey('source_of_data.id'))
+
+    user = db.relationship('User', backref='users')
+    source_of_data = db.relationship('Source_of_data', backref='source_of_datas')
 
 class Source_of_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)
