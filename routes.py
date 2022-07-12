@@ -103,6 +103,7 @@ class MyAdminIndexView(AdminIndexView):
 admin = admin.Admin(name="Common Database", template_mode='bootstrap4', index_view=MyAdminIndexView())
 
 admin.add_view(UserView(User, db.session))
+admin.add_view(UserView(UserAccess, db.session))
 admin.add_view(UserView(Source_of_data, db.session))
 admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))
