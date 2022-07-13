@@ -5,13 +5,13 @@ import flask_admin as admin
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_admin import AdminIndexView
 from sqlalchemy.sql import not_
+from flask_admin.menu import MenuLink
 
 
 from config import app
 from models import *
 from forms import *
 
-#Flask_Routes
 @app.route('/')
 def index():
     return '<a href="/login">Please Login</a>'
@@ -29,10 +29,12 @@ def login():
                 login_user(user)
                 print("Login was successful")
 
+                admin.name = "User: " +  str(current_user.email)
      
                 if(user.id == 1): #Der erste User ist Admin
                     return redirect(url_for('admin.index'))
-
+                else:
+                    return redirect('admin/customer')
             else: 
                 print("Login failed")
         else:
@@ -76,52 +78,9 @@ class UserView(ModelView):
                 all_ids = Source_of_data.query.all()
                 user_accessable_ids = self.session.query(UserAccess.source_of_data_id).filter(UserAccess.user_id == current_user.id)
 
-    
-
-                   
-
-                   
-
-                """
-                for i in user_accessable_ids:
-                    count = 0
-                    
-                    if i.source_of_data_id == all_ids[i.id]:
-                        count += 1
-
-                    if count == 0:
-                        ids_not_accessable.append(i.source_of_data_id)
-                """
-                #print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" + str(user_accessable_ids[0].source_of_data_id))
-
-                #filtered_model = self.session.query(self.model).filter(not_(self.model.source_of_data_id.in_(ids_not_accessable)))
                 filtered_model = self.session.query(self.model).filter((self.model.source_of_data_id.in_(user_accessable_ids)))
                
-                """                           
-                user_access_ids = self.session.query(UserAccess).filter(UserAccess.user_id == 1)
-                print("Jetzte hier:                       " + str(user_access_ids))
-                all_ids = Source_of_data.query.get(id)
-                ids_not_accessable = []
-
-                filtered_model = self.session.query(self.model)
-
-                for i in user_access_ids:
-                    count = 0
-                    
-                    if i.source_of_data_id == all_ids[i]:
-                        count += 1
-
-                    if count == 0:
-                        ids_not_accessable.append(i)
-                        print("p                 ::::       " + str(ids_not_accessable[i]))
-
-                for j in ids_not_accessable:
-                    filtered_model = filtered_model.query.filter(filtered_model.source_of_data_id != ids_not_accessable[j])       
-
-                """
-                return filtered_model
-             
-                #return self.session.query(self.model).filter(self.model.source_of_data_id == 2)
+                return filtered_model        
                 
             else:
                 return self.session.query(self.model)
@@ -132,7 +91,7 @@ class UserView(ModelView):
     def is_accessible(self):
         if current_user.is_authenticated: 
             if current_user.id != 1:
-                if self.model == User or self.model == Source_of_data:
+                if self.model == User or self.model == Source_of_data or self.model == UserAccess:
                     return False
                 else:
                     return True
@@ -140,8 +99,6 @@ class UserView(ModelView):
                 return True
         return False
             
-      
-
 
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
@@ -159,21 +116,12 @@ admin = admin.Admin(name="Common Database", template_mode='bootstrap4', index_vi
 admin.add_view(UserView(User, db.session))
 admin.add_view(UserView(UserAccess, db.session))
 admin.add_view(UserView(Source_of_data, db.session))
-admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Customer, db.session))
+admin.add_view(UserView(Address, db.session))
 admin.add_view(UserView(Invoice, db.session))
-
-
-
-
-
-
-
-
-
-
-
 admin.init_app(app)
+
+admin.add_link(MenuLink(name='Logout', category='', url="/logout"))
 
 #Login_Manager
 @login_manager.user_loader
