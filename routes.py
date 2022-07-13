@@ -60,6 +60,8 @@ def register():
         db.session.commit()
         print("successful registration")
 
+        return redirect(url_for('login'))
+
     return render_template('register.html', form=form)
 
 #Create_Custom_View
@@ -83,6 +85,10 @@ class UserView(ModelView):
                 return filtered_model        
                 
             else:
+                self.can_create = True
+                self.can_delete = True
+                self.can_edit = True
+
                 return self.session.query(self.model)
         else:
             return None
