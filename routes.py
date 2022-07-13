@@ -4,6 +4,8 @@ from flask_admin.contrib.sqla import ModelView
 import flask_admin as admin
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_admin import AdminIndexView
+from sqlalchemy.sql import not_
+
 
 from config import app
 from models import *
@@ -69,10 +71,31 @@ class UserView(ModelView):
                 self.can_delete = False
                 self.can_edit = False
 
-                model = self.model
-                filtered_model = self.session.query(self.model)
-                filtered_model = self.session.query(model).filter(model.source_of_data_id != 1)
-                filtered_model = self.session.query(model).filter(model.source_of_data_id != 3)
+                ids_not_accessable = []
+
+                all_ids = Source_of_data.query.all()
+                user_accessable_ids = self.session.query(UserAccess.source_of_data_id).filter(UserAccess.user_id == current_user.id)
+
+    
+
+                   
+
+                   
+
+                """
+                for i in user_accessable_ids:
+                    count = 0
+                    
+                    if i.source_of_data_id == all_ids[i.id]:
+                        count += 1
+
+                    if count == 0:
+                        ids_not_accessable.append(i.source_of_data_id)
+                """
+                #print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" + str(user_accessable_ids[0].source_of_data_id))
+
+                #filtered_model = self.session.query(self.model).filter(not_(self.model.source_of_data_id.in_(ids_not_accessable)))
+                filtered_model = self.session.query(self.model).filter((self.model.source_of_data_id.in_(user_accessable_ids)))
                
                 """                           
                 user_access_ids = self.session.query(UserAccess).filter(UserAccess.user_id == 1)
