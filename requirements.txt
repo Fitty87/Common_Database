@@ -10,6 +10,7 @@ coverage==6.4.1
 dnspython==2.2.1
 dominate==2.6.0
 email-validator==1.2.1
+Faker==13.15.0
 Flask==2.1.2
 Flask-Admin==1.6.0
 Flask-Babel==2.0.0
@@ -30,7 +31,10 @@ MarkupSafe==2.1.1
 marshmallow==3.17.0
 marshmallow-enum==1.5.1
 marshmallow-sqlalchemy==0.26.1
+mysqlclient==2.1.1
+numpy==1.23.1
 packaging==21.3
+pandas==1.4.3
 pluggy==1.0.0
 prison==0.2.1
 py==1.11.0

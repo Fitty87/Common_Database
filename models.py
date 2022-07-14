@@ -3,15 +3,12 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin.contrib.sqla import ModelView
+from flask_admin import expose
 
 #Data-Tables
 customer_addresses = db.Table('customer_addresses', 
     db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
     db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
-
-#user_accessable_source_of_data_ids = db.Table('user_accessable_source_of_data_ids', 
-    #db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    #db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
 source_of_data_addresses = db.Table('source_of_data_addresses', 
     db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
@@ -45,6 +42,7 @@ class UserAccess(db.Model):
 
     user = db.relationship('User', backref='users')
     source_of_data = db.relationship('Source_of_data', backref='source_of_datas')
+
 
 class Source_of_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)

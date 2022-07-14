@@ -4,6 +4,8 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
+
+
 # Create flask app
 app = Flask(__name__, template_folder='templates')
 
