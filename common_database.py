@@ -34,23 +34,39 @@ if countUser == 0:
     db.session.commit()
 
 #Random Data with Faker
-fake = Faker()
-fake_data = defaultdict(list)
+fake = Faker("de_AT")
+fake_data_customer = defaultdict(list)
+fake_data_address = defaultdict(list)
 
 count_source_of_data = db.session.query(Source_of_data).count()
 
+#Customer---
 for _ in range(10):
-    fake_data["source_of_data_id"].append(random.randint(1, count_source_of_data))
-    fake_data["name"].append(fake.first_name() + " " + fake.last_name())
-    fake_data["date_of_birth"].append(fake.date_of_birth())
-    fake_data["telephone_number"].append(fake.phone_number())
-    fake_data["email"].append(fake.email())
-    fake_data["created_at"].append(datetime.now())
+    fake_data_customer["source_of_data_id"].append(random.randint(1, count_source_of_data))
+    fake_data_customer["name"].append(fake.first_name() + " " + fake.last_name())
+    fake_data_customer["date_of_birth"].append(fake.date_of_birth())
+    fake_data_customer["telephone_number"].append(fake.phone_number())
+    fake_data_customer["email"].append(fake.email())
+    fake_data_customer["created_at"].append(datetime.now())
 
-df_fake_data = pd.DataFrame(fake_data)
+df_fake_data_customer = pd.DataFrame(fake_data_customer)
+
+#Address---
+for _ in range(10):
+    fake_data_address["source_of_data_id"].append(random.randint(1, count_source_of_data))
+    fake_data_address["street"].append(fake.street_name())
+    fake_data_address["street_number"].append(random.randint(1, 299))
+    fake_data_address["postcode"].append(fake.postcode())
+    fake_data_address["location"].append(fake.city())
+    fake_data_address["date_added"].append(datetime.now())
+
+
+
+df_fake_data_address = pd.DataFrame(fake_data_address)
 
 #Hier eig die env-Variable nutzen
-df_fake_data.to_sql('Customer', con='sqlite:///common_database.db', index=False, if_exists='append')
+#df_fake_data_customer.to_sql('Customer', con='sqlite:///common_database.db', index=False, if_exists='append')
+df_fake_data_address.to_sql('Address', con='sqlite:///common_database.db', index=False, if_exists='append')
 
 
 
