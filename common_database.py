@@ -37,6 +37,7 @@ if countUser == 0:
 fake = Faker("de_AT")
 fake_data_customer = defaultdict(list)
 fake_data_address = defaultdict(list)
+fake_data_invoice = defaultdict(list)
 
 count_source_of_data = db.session.query(Source_of_data).count()
 
@@ -51,6 +52,10 @@ for _ in range(10):
 
 df_fake_data_customer = pd.DataFrame(fake_data_customer)
 
+#Hier eig die env-Variable nutzen
+#df_fake_data_customer.to_sql('Customer', con='sqlite:///common_database.db', index=False, if_exists='append')
+
+
 #Address---
 for _ in range(10):
     fake_data_address["source_of_data_id"].append(random.randint(1, count_source_of_data))
@@ -60,15 +65,25 @@ for _ in range(10):
     fake_data_address["location"].append(fake.city())
     fake_data_address["date_added"].append(datetime.now())
 
-
-
 df_fake_data_address = pd.DataFrame(fake_data_address)
 
-#Hier eig die env-Variable nutzen
-#df_fake_data_customer.to_sql('Customer', con='sqlite:///common_database.db', index=False, if_exists='append')
-df_fake_data_address.to_sql('Address', con='sqlite:///common_database.db', index=False, if_exists='append')
+#df_fake_data_address.to_sql('Address', con='sqlite:///common_database.db', index=False, if_exists='append')
 
+#Invoice---
+count_customer = db.session.query(Customer).count()
 
+for _ in range(10):
+    fake_data_invoice["source_of_data_id"].append(random.randint(1, count_source_of_data))
+    fake_data_invoice["customer_id"].append(random.randint(1, count_customer))
+    fake_data_invoice["date"].append(fake.date_this_decade())
+    fake_data_invoice["number"].append(random.randint(100, 999999999))
+    fake_data_invoice["service"].append(fake.catch_phrase())
+    fake_data_invoice["amount"].append(round(random.uniform(0.00, 10000.00), 2))
+    fake_data_invoice["created_at"].append(datetime.now())
+
+df_fake_data_invoice = pd.DataFrame(fake_data_invoice)
+
+df_fake_data_invoice.to_sql('Invoice', con='sqlite:///common_database.db', index=False, if_exists='append')
 
 
 # Run App
