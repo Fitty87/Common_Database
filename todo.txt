@@ -1,0 +1,6 @@
+Test: Trennung "Stammdaten"
+Test: Alle Tests nochmal überarbeiten
+Test: valid email
+Test: database
+Tutorials: regex, flask, sqlalchemy, html, http
+Admin user --> Wenn Database gelöscht wird dann kann man den nicht erstellen!

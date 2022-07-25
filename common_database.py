@@ -20,16 +20,16 @@ migration_path = op.join(app_dir, 'migrations')
 #db.session.commit()
 
 #Create first User as Admin if countUser == 0
-#countUser = User.query.count()
-#if countUser == 0:
-    #user = User()
-    #user.email = "admin@oe24.at"
-    #user.password_hash = generate_password_hash("admin")
-    #db.session.add(user)
-    #db.session.commit()
+countUser = User.query.count()
+if countUser == 0:
+    user = User()
+    user.email = "admin@oe24.at"
+    user.password_hash = generate_password_hash("admin")
+    db.session.add(user)
+    db.session.commit()
 
 #Random faker data after creating Admin
-#Create_Random_Faker_data()
+Create_Random_Faker_data()
 
 
 

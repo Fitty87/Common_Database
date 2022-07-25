@@ -68,10 +68,6 @@ def register():
 class UserView(ModelView):
     page_size = 10
 
-    def on_model_change(self, form, instance):
-        if instance:
-            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-
     def get_query(self):
         if current_user.is_authenticated: 
             if current_user.id != 1:
