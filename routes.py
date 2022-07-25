@@ -6,6 +6,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_admin import AdminIndexView
 from sqlalchemy.sql import not_
 from flask_admin.menu import MenuLink
+from faker_data import *
 
 
 from config import app
@@ -15,7 +16,6 @@ from forms import *
 @app.route('/')
 def index():
     return '<a href="/login">Please Login</a>'
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -64,6 +64,11 @@ def register():
 
     return render_template('register.html', form=form)
 
+@app.route('/faker_data')
+def faker_data():
+    Create_Random_Faker_data()
+    return redirect(url_for('admin.index'))
+
 #Create_Custom_View
 class UserView(ModelView):
     page_size = 10
@@ -106,14 +111,17 @@ class UserView(ModelView):
         return False
             
 
+
 #Admin_Index_View
 class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
+    def is_accessible(self):       
         if current_user.is_authenticated: #Ist User eingeloggt!
             if current_user.id == 1: #Admin hat id=1
                 return True
         else:
             return False
+
+
   
 
 #Create_Admin_Interface

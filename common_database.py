@@ -29,12 +29,7 @@ if countUser == 0:
     db.session.commit()
 
 #Random faker data after creating Admin
-Create_Random_Faker_data()
-
-
-
-
-
+#Create_Random_Faker_data()
 
 # Run App
 if __name__ == '__main__':
