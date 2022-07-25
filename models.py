@@ -50,11 +50,11 @@ class Source_of_data(db.Model):
     customer = db.relationship('Customer', backref='Source_of_data')
     invoices = db.relationship('Invoice', backref='Source_of_data')
     addresses = db.relationship('Address', backref='Source_of_data')
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, name, date_added):
+    def __init__(self, name, created_at):
         self.name = name
-        self.date_added = date_added
+        self.created_at = created_at
      
 
     def __str__(self):
@@ -68,15 +68,15 @@ class Address(db.Model):
     street_number = db.Column(db.String(15), nullable = False)
     postcode = db.Column(db.Integer, nullable = False)
     location = db.Column(db.String(30), nullable = False)
-    date_added = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
-    def __init__(self, id_source_of_data, street, street_number, postcode, location, date_added):
+    def __init__(self, id_source_of_data, street, street_number, postcode, location, created_at):
         self.source_of_data_id = id_source_of_data
         self.street = street
         self.street_number = street_number
         self.postcode = postcode
         self.location = location
-        self.date_added = date_added
+        self.created_at = created_at
 
     def __str__(self):
         return str(self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location)
@@ -93,13 +93,16 @@ class Customer(db.Model):
     addresses = db.relationship('Address', secondary="customer_addresses", lazy='subquery', backref=db.backref('customer', lazy=True))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    def __init__(self, id_source_of_data,  name, date_of_birth, telephone_number, email, date_added):
+    def __init__(self, id_source_of_data,  name, date_of_birth, telephone_number, email, created_at, addresses):
         self.id_source_of_data = id_source_of_data
         self.name = name
         self.date_of_birth = date_of_birth
         self.telephone_number = telephone_number
         self.email = email
-        self.date_added = date_added
+        self.created_at = created_at
+
+        for i in range(len(addresses)):
+            self.addresses.append(addresses[i])
 
 
     def __str__(self):
@@ -113,7 +116,7 @@ class Invoice(db.Model):
     date = db.Column(db.Date, nullable = False)
     number = db.Column(db.String(30), nullable = False, unique=True)
     service = db.Column(db.String(50), nullable = False)
-    amount = db.Numeric(10,2)
+    amount = db.Column(db.Numeric(10,2))
     created_at = db.Column(db.DateTime, default=datetime.now)
    
     def __init__(self, id_source_of_data, customer_id, date, number, service, amount, created_at):

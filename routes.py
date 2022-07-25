@@ -66,7 +66,7 @@ def register():
 
 #Create_Custom_View
 class UserView(ModelView):
-    page_size = 5
+    page_size = 10
 
     def on_model_change(self, form, instance):
         if instance:

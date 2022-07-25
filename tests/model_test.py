@@ -11,7 +11,6 @@ import re
 from config import db
 
 #Fixtures-----
-"""
 @pytest.fixture(scope='class')
 def user_instance():
     #user = User("s.wolf@oe24.at", "password123")
@@ -20,7 +19,7 @@ def user_instance():
     user.password = "password123"
     
     return user
-"""
+
 
 @pytest.fixture(scope='class')
 def source_of_data_instance():
@@ -43,8 +42,9 @@ def address_instance2(source_of_data_instance):
     return address
 
 @pytest.fixture(scope='class')
-def customer_instance(source_of_data_instance):
-    customer = Customer(source_of_data_instance.id, "Franz", "1970-05-03", "+123", "office@franz.at", "2022-05-30 20:20:00")
+def customer_instance(source_of_data_instance, address_instance):
+    addresses = [address_instance]
+    customer = Customer(source_of_data_instance.id, "Franz", "1970-05-03", "+123", "office@franz.at", "2022-05-30 20:20:00", addresses)
     return customer
 
 @pytest.fixture(scope='class')
@@ -72,14 +72,15 @@ def wrong_source_of_data_instance_too_long():
 class Test_Create_New_Records:
     
     #Hier noch Test unterteilen in Stammdaten testen / Funktional Tests
+    """
     def test_new_user(self, user_instance):
-        """
+        
         GIVEN a User Model
         WHEN a new User is created
         THEN Check if email is valid,
                    if password do not exceed the max of chars
                    if password is not an empty String
-        """
+        
         
         valid_email = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", user_instance.email))
         count_passwordchars = len(user_instance.password)
@@ -88,7 +89,7 @@ class Test_Create_New_Records:
         assert valid_email == True
         assert count_passwordchars <= 20
         assert count_passwordchars_empties != len(user_instance.password)
-
+        """
 
     def test_new_Source_of_Data(self, source_of_data_instance, wrong_source_of_data_instance_too_short, wrong_source_of_data_instance_too_long):
         """
@@ -97,14 +98,14 @@ class Test_Create_New_Records:
         THEN Check if name is correct,
                     if a name of at least 3 characters is entered,
                     if a name do not exceed the max lenght
-                    if the date_added is correct
+                    if the created_at is correct
         """
         count_chars_name = len(source_of_data_instance.name)
 
         assert source_of_data_instance.name == "Radio"
         assert count_chars_name >= 3
         assert count_chars_name <= 50
-        assert source_of_data_instance.date_added == "2022-05-30 20:20:00"
+        assert source_of_data_instance.created_at == "2022-05-30 20:20:00"
 
         count_chars_name_wrong_too_short = len(wrong_source_of_data_instance_too_short.name)
         count_chars_name_wrong_too_long = len(wrong_source_of_data_instance_too_long.name)
@@ -148,7 +149,7 @@ class Test_Create_New_Records:
         assert address_instance.location == "Wien"
         assert count_chars_location >= 3
         assert count_numbers_location == 0
-        assert address_instance.date_added == "2022-05-30 20:20:00"
+        assert address_instance.created_at == "2022-05-30 20:20:00"
 
 
     def test_new_customer(self, source_of_data_instance, customer_instance):
@@ -181,8 +182,8 @@ class Test_Create_New_Records:
         assert valid_telephone_number == True
         assert customer_instance.email == "office@franz.at"
         assert valid_email == True
-        assert customer_instance.date_added == "2022-05-30 20:20:00"
-
+        assert customer_instance.created_at == "2022-05-30 20:20:00"
+        #addresses testen!
 
     def test_new_invoice(self, source_of_data_instance, customer_instance, invoice_instance1):
         """
