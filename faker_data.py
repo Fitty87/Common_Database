@@ -5,6 +5,7 @@ import pandas as pd
 from faker import Faker
 from collections import defaultdict
 from sqlalchemy import create_engine
+from werkzeug.security import generate_password_hash
 
 def Create_Random_Faker_data():
     fake = Faker("de_AT")
@@ -18,14 +19,14 @@ def Create_Random_Faker_data():
     #User---
     for _ in range(2):
         fake_data_user["email"].append(fake.email())
-        fake_data_user["password_hash"].append("123")
+        fake_data_user["password_hash"].append(generate_password_hash("123"))
 
     dt_fake_data_user = pd.DataFrame(fake_data_user)
 
     dt_fake_data_user.to_sql('User', con='sqlite:///common_database.db', index=False, if_exists='append')
 
     #Source_of_data---
-    for _ in range(2):
+    for _ in range(4):
         fake_data_source_of_data["name"].append("sod_" + fake.color_name())
         fake_data_source_of_data["created_at"].append(datetime.now())
 
@@ -85,8 +86,39 @@ def Create_Random_Faker_data():
 
     for i in range(count_customer):
         cust[i].addresses.append(addr[i])
-        db.session.commit()
         
+
+    #User Access
+    count_user = db.session.query(User).count()
+  
+    user = User.query.all()
+    sod = Source_of_data.query.all()
+
+    for i in range(count_user +1):
+        
+        #not for admin
+        if i <= 1:
+            continue
+
+        count_sods = random.randint(1, count_source_of_data)
+        sods = []
+
+        #random source of data
+        for j in range(count_sods):
+            randomSod = random.randint(0, count_source_of_data -1)
+
+            if randomSod not in sods:
+                sods.append(randomSod)
+
+        #add UserAccess
+        for x in range(len(sods)):
+            user_access = UserAccess(user_id=i, source_of_data_id=sod[sods[x]].id)
+            db.session.add(user_access)
+
+
+
+    db.session.commit()#just one time at the end     
+     
 
 
 

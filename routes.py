@@ -65,8 +65,11 @@ def register():
     return render_template('register.html', form=form)
 
 @app.route('/faker_data')
-def faker_data():
-    Create_Random_Faker_data()
+def faker_data():   
+    #Just Admin is allowed to create Faker_Data
+    if current_user.id == 1:
+        Create_Random_Faker_data()
+
     return redirect(url_for('admin.index'))
 
 #Create_Custom_View

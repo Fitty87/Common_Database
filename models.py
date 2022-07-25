@@ -10,9 +10,9 @@ customer_addresses = db.Table('customer_addresses',
     db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
     db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
 
-source_of_data_addresses = db.Table('source_of_data_addresses', 
-    db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-    db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
+#source_of_data_addresses = db.Table('source_of_data_addresses', 
+    #db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
+    #db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
 
 #Model
 class User(db.Model, UserMixin):
