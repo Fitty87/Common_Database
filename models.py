@@ -10,10 +10,6 @@ customer_addresses = db.Table('customer_addresses',
     db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
     db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
 
-#source_of_data_addresses = db.Table('source_of_data_addresses', 
-    #db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-    #db.Column('source_of_data_id', db.Integer, db.ForeignKey('source_of_data.id'), primary_key=True))
-
 #Model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
@@ -50,7 +46,7 @@ class Source_of_data(db.Model):
     customer = db.relationship('Customer', backref='Source_of_data')
     invoices = db.relationship('Invoice', backref='Source_of_data')
     addresses = db.relationship('Address', backref='Source_of_data')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def __init__(self, name, created_at):
         self.name = name
@@ -68,7 +64,7 @@ class Address(db.Model):
     street_number = db.Column(db.String(15), nullable = False)
     postcode = db.Column(db.Integer, nullable = False)
     location = db.Column(db.String(30), nullable = False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def __init__(self, id_source_of_data, street, street_number, postcode, location, created_at):
         self.source_of_data_id = id_source_of_data
@@ -91,7 +87,7 @@ class Customer(db.Model):
     email = db.Column(db.String(50), nullable = False)  
     invoices = db.relationship('Invoice', backref='customer')
     addresses = db.relationship('Address', secondary="customer_addresses", lazy='subquery', backref=db.backref('customer', lazy=True))
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def __init__(self, id_source_of_data,  name, date_of_birth, telephone_number, email, created_at, addresses):
         self.id_source_of_data = id_source_of_data
@@ -117,7 +113,7 @@ class Invoice(db.Model):
     number = db.Column(db.String(30), nullable = False, unique=True)
     service = db.Column(db.String(50), nullable = False)
     amount = db.Column(db.Numeric(10,2))
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
    
     def __init__(self, id_source_of_data, customer_id, date, number, service, amount, created_at):
         self.source_of_data_id = id_source_of_data

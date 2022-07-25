@@ -6,6 +6,7 @@ from faker import Faker
 from collections import defaultdict
 from sqlalchemy import create_engine
 from werkzeug.security import generate_password_hash
+from datetime import datetime
 
 def Create_Random_Faker_data():
     fake = Faker("de_AT")
@@ -28,7 +29,7 @@ def Create_Random_Faker_data():
     #Source_of_data---
     for _ in range(4):
         fake_data_source_of_data["name"].append("sod_" + fake.color_name())
-        fake_data_source_of_data["created_at"].append(datetime.now())
+        fake_data_source_of_data["created_at"].append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     dt_fake_data_source_of_data = pd.DataFrame(fake_data_source_of_data)
 
@@ -43,7 +44,7 @@ def Create_Random_Faker_data():
         fake_data_address["street_number"].append(random.randint(1, 299))
         fake_data_address["postcode"].append(fake.postcode())
         fake_data_address["location"].append(fake.city())
-        fake_data_address["created_at"].append(datetime.now())
+        fake_data_address["created_at"].append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     df_fake_data_address = pd.DataFrame(fake_data_address)
 
@@ -56,7 +57,7 @@ def Create_Random_Faker_data():
         fake_data_customer["date_of_birth"].append(fake.date_of_birth())
         fake_data_customer["telephone_number"].append(fake.phone_number())
         fake_data_customer["email"].append(fake.email())
-        fake_data_customer["created_at"].append(datetime.now())
+        fake_data_customer["created_at"].append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     df_fake_data_customer = pd.DataFrame(fake_data_customer)
 
@@ -74,7 +75,7 @@ def Create_Random_Faker_data():
         fake_data_invoice["number"].append(random.randint(100, 999999999))
         fake_data_invoice["service"].append(fake.catch_phrase())
         fake_data_invoice["amount"].append(round(random.uniform(0.00, 10000.00), 2))
-        fake_data_invoice["created_at"].append(datetime.now())
+        fake_data_invoice["created_at"].append(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     df_fake_data_invoice = pd.DataFrame(fake_data_invoice)
 
