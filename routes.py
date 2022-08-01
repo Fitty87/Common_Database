@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_admin.contrib.sqla import ModelView
 import flask_admin as admin
@@ -7,7 +7,6 @@ from flask_admin import AdminIndexView
 from sqlalchemy.sql import not_
 from flask_admin.menu import MenuLink
 from faker_data import *
-
 
 from config import app
 from models import *
@@ -27,7 +26,7 @@ def login():
         if user:
             if check_password_hash(user.password_hash, form.password.data):
                 login_user(user)
-                print("Login was successful")
+                flash("Login was successful", "success")
 
                 admin.name = "User: " +  str(current_user.email)
      
@@ -35,17 +34,17 @@ def login():
                     return redirect(url_for('admin.index'))
                 else:
                     return redirect('admin/customer')
-            else: 
-                print("Login failed")
+            else:
+                flash("Login failed", "fail")
         else:
-            print("User doesn't exist!")  
+            flash("User doesn't exist!", "fail")  
 
     return render_template('login.html', form=form)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    print("Logout")
+    flash("Logout was successful", "success")
     return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -57,8 +56,9 @@ def register():
         user.email = form.email.data
         user.password_hash = generate_password_hash(form.password.data)
         db.session.add(user)
+
         db.session.commit()
-        print("successful registration")
+        flash("successful registration", "success")
 
         return redirect(url_for('login'))
 

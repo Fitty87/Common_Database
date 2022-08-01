@@ -7,6 +7,7 @@ from collections import defaultdict
 from sqlalchemy import create_engine
 from werkzeug.security import generate_password_hash
 from datetime import datetime
+from flask import flash
 
 def Create_Random_Faker_data():
     fake = Faker("de_AT")
@@ -119,7 +120,8 @@ def Create_Random_Faker_data():
 
 
     db.session.commit()#just one time at the end     
-     
+    
+    flash("Faker Data were generated", "success")
 
 
 
