@@ -69,7 +69,7 @@ def wrong_source_of_data_instance_too_long():
     return source_of_data
 
 #Test_Classes-----
-class Test_Create_New_Records:
+class Test_Create_New_Records_Old:
     
     #Hier noch Test unterteilen in Stammdaten testen / Funktional Tests
     """

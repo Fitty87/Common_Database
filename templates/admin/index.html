@@ -1,0 +1,15 @@
+{% extends 'admin/master.html' %}
+
+
+
+{% block body %}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link active" href= "{{url_for('faker_data')}}">Create Faker_Data</a>
+</li>
+<style>
+    .nav-link {
+        color: red;
+    }
+</style>
+{% endblock %}
