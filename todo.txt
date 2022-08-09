@@ -5,3 +5,8 @@ Test: database
 Tutorials: regex, flask, sqlalchemy, html, http
 Admin user --> Wenn Database gelöscht wird dann kann man den nicht erstellen!
 FakerData only once
+
+User --> add created_at also in test and faker data
+Model-Logik Test so wie wirs wollen: z.B. postcode positive Zahl (Eigene Datei) --> Here the right format check
+
+Constructer eliminieren
