@@ -11,12 +11,14 @@ class Test_Create_New_User_Records:
         GIVEN a User instance
         WHEN this user instance was created
         THEN Check if the user has the right email-address and
-                               the right password
+                               the right password and
+                               the right 'created_at' time
         """
         user = user_instance
 
         assert user.email == "fuchs@example.at"
         assert check_password_hash(user.password_hash, "password123")
+        assert user.created_at == "2022-05-30 20:20:00"
 
 
     def test_correct_datatypes(self, user_instance):
@@ -25,7 +27,8 @@ class Test_Create_New_User_Records:
         WHEN this user instance was created
         THEN Check if the users email-address is a String with less than 50 chars
                                 which is not empty.
-                   if the users hashed password is a String with less than 128 chars   
+                   if the users hashed password is a String with less than 128 chars and
+                   if the users'created_at' is a String with the right format  
                                 
         """
         user = user_instance
@@ -36,6 +39,9 @@ class Test_Create_New_User_Records:
 
         assert type(user.password_hash) == str
         assert len(user.password_hash) <= 128
+
+        assert type(user.created_at) == str
+        assert datetime.strptime(user.created_at, "%Y-%m-%d %H:%M:%S")
 
 
     def test_unique_email(self, user_instance, user_instance2):
@@ -276,13 +282,15 @@ class Test_Create_New_UserAccess_Records:
         GIVEN a UserAccess instance
         WHEN this UserAccess instance was created
         THEN Check if the UserAccess has the right User_id and
-                               the right Source_of_Data_id
+                               the right Source_of_Data_id and
+                               the right 'created_at' time
         """
 
         ua = useraccess_instance
 
         assert ua.user_id == 1
         assert ua.source_of_data_id == 1
+        assert ua.created_at == "2022-05-30 20:20:00"
 
     
     def test_correct_datatypes(self, useraccess_instance):
@@ -290,13 +298,17 @@ class Test_Create_New_UserAccess_Records:
         GIVEN a UserAccess
         WHEN this UserAccess instance was created
         THEN Check if the UserAccess User_id is a Integer and 
-                   if the UserAccess Source_of_Data_id is a Integer                         
+                   if the UserAccess Source_of_Data_id is a Integer and
+                   if the UserAccess'created_at' is a String with the right format                           
         """
 
         ua = useraccess_instance
 
         assert type(ua.user_id) == int
         assert type(ua.source_of_data_id) == int
+
+        assert type(ua.created_at) == str
+        assert datetime.strptime(ua.created_at, "%Y-%m-%d %H:%M:%S")
 
 
 

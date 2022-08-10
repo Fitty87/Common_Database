@@ -1,5 +1,3 @@
-Test: Trennung "Stammdaten"
-Test: Alle Tests nochmal überarbeiten
 Test: valid email
 Test: database
 Tutorials: regex, flask, sqlalchemy, html, http
@@ -9,6 +7,12 @@ FakerData only once
 User --> add created_at also in test and faker data
 Model-Logik Test so wie wirs wollen: z.B. postcode positive Zahl (Eigene Datei) --> Here the right format check
 
-Constructer eliminieren
-
 User-Access: Prüfen Kombi aus beiden darf nur einmal vorkommen!
+
+In Customer-Model:
+    for i in range(len(addresses)):
+        self.addresses.append(addresses[i])
+
+hab das gelöscht. Funktioniert das nicht?
+
+TEST: z.B. Multiple Invoices zu SOD
