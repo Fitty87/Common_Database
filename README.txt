@@ -3,10 +3,10 @@ Clone project:
     git clone https://github.com/Fitty87/Example
 
 Create virtual enviroment:   
-    py -m venv virt 
+    py -m venv virt
 
 Activate virtual enviroment:   
-    cd env\scripts\
+    cd virt\scripts\
     activate
 
 Install requirements:
