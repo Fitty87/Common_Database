@@ -2,8 +2,8 @@ import os, sys
 sys.path.insert(0,'tests')
 from fixtures import *
 
-#class Test_Relationship_Source_Of_Data_Records:
-    #def test_relationship_customer(self, source_of_data_instance, customer_instance):
+#class Test_Relationship_UserAccess_Records:
+   # def test_relationship_user(self, user_instance, source_of_data_instance):
     #"""
     #GIVEN one Source of data and one Customer
     #WHEN a new Customer was created

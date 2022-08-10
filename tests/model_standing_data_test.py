@@ -268,3 +268,35 @@ class Test_Create_New_Invoice_Records:
 
         assert type(inv.created_at) == str
         assert datetime.strptime(inv.created_at, "%Y-%m-%d %H:%M:%S")
+
+class Test_Create_New_UserAccess_Records:
+    
+    def test_correct_content(self, useraccess_instance):
+        """
+        GIVEN a UserAccess instance
+        WHEN this UserAccess instance was created
+        THEN Check if the UserAccess has the right User_id and
+                               the right Source_of_Data_id
+        """
+
+        ua = useraccess_instance
+
+        assert ua.user_id == 1
+        assert ua.source_of_data_id == 1
+
+    
+    def test_correct_datatypes(self, useraccess_instance):
+        """
+        GIVEN a UserAccess
+        WHEN this UserAccess instance was created
+        THEN Check if the UserAccess User_id is a Integer and 
+                   if the UserAccess Source_of_Data_id is a Integer                         
+        """
+
+        ua = useraccess_instance
+
+        assert type(ua.user_id) == int
+        assert type(ua.source_of_data_id) == int
+
+
+

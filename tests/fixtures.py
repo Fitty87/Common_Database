@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 @pytest.fixture(scope='class')
 def user_instance():
     user = User()
+    user.id = 1 #@Tom: Primary Key hier händisch auf 1 setzen, weil es die erste User_instanz ist, damit ich UserAccess testen kann? so OK?
     user.email = "fuchs@example.at"
     user.password_hash =  generate_password_hash("password123")
     
@@ -22,6 +23,7 @@ def user_instance2():
 @pytest.fixture(scope='class')
 def source_of_data_instance():
     source_of_data = Source_of_data("Radio", "2022-05-30 20:20:00")
+    source_of_data.id = 1
     return source_of_data
 
 @pytest.fixture(scope='class')
@@ -44,3 +46,10 @@ def customer_instance(source_of_data_instance, address_instance):
 def invoice_instance1(source_of_data_instance, customer_instance):
     invoice = Invoice(source_of_data_instance.id, customer_instance.id, "2021-11-30", "1234564", "Anzeige", 1500.02,  "2022-05-30 20:20:00")
     return invoice
+
+@pytest.fixture(scope='class')
+def useraccess_instance(user_instance, source_of_data_instance):
+    useraccess = UserAccess
+    useraccess.user_id = user_instance.id
+    useraccess.source_of_data_id = source_of_data_instance.id
+    return useraccess

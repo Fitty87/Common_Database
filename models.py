@@ -75,7 +75,7 @@ class Address(db.Model):
         self.created_at = created_at
 
     def __str__(self):
-        return str(self.street+' '+str(self.street_number)+', '+str(self.postcode)+' '+self.location)
+        return str(self.street+' '+ str(self.street_number)+', '+ str(self.postcode)+' '+ self.location)
 
 
 class Customer(db.Model):
