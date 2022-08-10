@@ -10,7 +10,6 @@ customer_addresses = db.Table('customer_addresses',
     db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
     db.Column('customer_id', db.Integer, db.ForeignKey('customer.id'), primary_key=True))
 
-
 #Model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
@@ -52,7 +51,6 @@ class Source_of_data(db.Model):
     invoices = db.relationship('Invoice', backref='Source_of_data')
     addresses = db.relationship('Address', backref='Source_of_data')
 
-
     def __str__(self):
         return str(self.name)
 
@@ -81,7 +79,6 @@ class Customer(db.Model):
 
     invoices = db.relationship('Invoice', backref='customer')
     addresses = db.relationship('Address', secondary="customer_addresses", lazy='subquery', backref=db.backref('customer', lazy=True))
-
 
     def __str__(self):
         return str(self.name)

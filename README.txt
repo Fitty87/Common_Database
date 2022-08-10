@@ -1,27 +1,27 @@
 
 Clone project:   
-git clone https://github.com/Fitty87/Example
+    git clone https://github.com/Fitty87/Example
 
 Create virtual enviroment:   
-py -m venv env 
+    py -m venv virt 
 
 Activate virtual enviroment:   
-cd env\scripts\
-activate.bat 
+    cd env\scripts\
+    activate
 
-Install requirements 
-cd ..
-cd ..
-py -m pip install -r Example\requirements.txt
+Install requirements:
+    cd ..
+    cd ..
+    py -m pip install -r requirements.txt
 
-Settings Flask
-set FLASK_APP=common_database.py
-set FLASK_DEBUG=1
+Settings Flask:
+    set FLASK_APP=app.py
+    set FLASK_DEBUG=1
 
-Start Server
-Flask run
+Start Server:
+    Flask run
 
-Use localhost
-http://127.0.0.1:5000/
+Use localhost:
+    http://127.0.0.1:5000/
 
 
